@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+} from 'react-router-dom';
+import Main from './routes/Main';
+import Books from './routes/Books';
+import MenuBar from './components/MenuBar/MenuBar';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+class App extends React.Component {
+  state = {
+    token: '1235',
+  };
+
+  render() {
+    const { token } = this.state;
+    return (
+      <BrowserRouter>
+        <div
+          className="App"
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+          <MenuBar token={token} />
+          <Switch>
+
+            <Route exact path="/">
+              <Main token={token} />
+            </Route>
+
+            <Route path="/books/:bookName">
+              <Books token={token} />
+            </Route>
+
+          </Switch>
+        </div>
+      </BrowserRouter>
+    );
+  }
 }
 
 export default App;
