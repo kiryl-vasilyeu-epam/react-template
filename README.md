@@ -1,70 +1,128 @@
-# Getting Started with Create React App
+# **Основы React**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## **1. Установка реакта через модуль - `npx create-react-app ./`**
 
-## Available Scripts
+> -------------------
 
-In the project directory, you can run:
+## **2. Основная концепция - деление на компоненты**
 
-### `npm start`
+### - Название компонентов и файлов с ними - одинаковые, с большой буквы -> Button.jsx
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### - Классам-компонентам нужно наследоваться от `React.Component` -> Button.jsx
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### - Отрисовка происходит в методе `render(){}` -> Button.jsx
 
-### `npm test`
+### - метод `render` должен содержать один родительский тег -> Button.jsx
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+> -------------------
 
-### `npm run build`
+## **3. Стилизация**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### - Через подключение `.css` файла -> Button.jsx
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### - Через пропс `style`, передавая обьект -> Main.jsx
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+> -------------------
 
-### `npm run eject`
+## **4. Параметры/пропсы `this.props`**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### - Для выполнения js внутри jsx нужно использовать `{}` -> Main.jsx
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### - Передавать можно любые данные -> Main.jsx
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### - Если просто написать название - будет true -> Header.jsx
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### - то, что написано внутри компонента - находится в пропсе `children`
 
-## Learn More
+> -------------------
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## **5. Генерация Ui по данным**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### - можно ложить массив с тегами внутрь `{ [<div> 1 </div>, <div> 2 </div>] }` -> Main.jsx
 
-### Code Splitting
+### - каждый тег внутри массива должен содержать уникальный ключ - пропс `key` -> Main.jsx
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### - Блоки кода можно ложить в отельные методы -> Main.jsx
 
-### Analyzing the Bundle Size
+> -------------------
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## **6. События**
 
-### Making a Progressive Web App
+### - передавать в пропсы можно и функции
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### - при передаче функции в пропсы теряется `this`
 
-### Advanced Configuration
+### - при описании конструктора нужно писать `super(props)`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### - привязать this к методу можно через bind, можно просто использовать стрелочную функцию
 
-### Deployment
+> -------------------
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## **7. Состояние/стейт `this.state`**
 
-### `npm run build` fails to minify
+### - в конструкторе или в классе можно создать обьект `state`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### - менять стейт можно **ТОЛЬКО** через `this.setState`
+
+### - в `setState` передается обьект только с теми параметрами, которые надо менять
+
+### - в `setState` можно передать функцию, она принимает текущий стейт, и должна возвращать новый
+
+### - **One source of truth**, данные должны идти только из 1 источника
+
+### - Данные от ребенка к родителю можно передать через функции-коллбэки
+
+> -------------------
+
+## **8. Lifecycle методы**
+
+### - Порядок изначальной отрисовки - `constructor(props)`, `static getDerivedStateFromProps`, `render`, `componentDidMount()`
+
+### `render` срабатывает каждый раз когда обновляются пропсы или стейт
+
+### `componentDidMount` срабатывает **ОДИН** раз для одного инстанса, даже при обновлении пропсов и стейта больше не сработает
+
+### - Порядок обновления - `static getDerivedStateFromProps`, `shouldComponentUpdate(nextProps, nextState)`, `render`, `getSnapshotBeforeUpdate`, `componentDidUpdate(prevProps, prevState)`
+
+### `shouldComponentUpdate(nextProps, nextState)` если вернуть false у этого метода, компонент не будт обновляться
+
+### - `static getDerivedStateFromProps(props, state)` - **СТАТИЧЕСКИЙ** метод (класса, не экземпляра), может сконфигурировать новое состояние в зависимости от изменение пропсов
+
+### - `componentWillUnmount()` - вызывается прямо перед удалением компонента из DOM
+
+> -------------------
+
+## **9. HOC - high order function**
+
+> -------------------
+
+# **React router**
+
+## **1. Установка**
+
+> -------------------
+
+### - `npm i react-router-dom@5`
+
+### - обернуть `<App />` в `<BrowserRouter>`
+
+### - создать `<Switch>`, в них сложить `<Route path="/path"><Comp /></Route>`
+
+### - Навигироваться можно через `<Link to='/main'>Go to Main</Link>`
+
+### - Для `/` страницы нужно использовать `exact`
+
+### - Параметры можно передавать через search (?) и дополнением пути (/name)
+
+### - Получить данные и доступ к навигации можно через hoc `withRouter`
+
+> -------------------
+
+# **Styled components**
+
+
+> [React docs](https://ru.reactjs.org/docs/getting-started.html)
+
+> [React router v5 docs](https://v5.reactrouter.com/web/guides/quick-start)
+
+> [Styled components docs](https://styled-components.com/docs/basics#getting-started)
